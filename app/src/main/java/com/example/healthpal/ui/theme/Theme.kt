@@ -14,13 +14,19 @@ import androidx.compose.ui.platform.LocalContext
 private val DarkColorScheme = darkColorScheme(
     primary = BackgroundGrey,
     surface = DarkCard,
-    onSurface = White
+    onSurface = White,
+    secondary = DarkChart,
+    outline = White,
+    inverseSurface = DarkCardDisabled
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = BackgroundWhite,
     surface = LightCard,
-    onSurface = Black
+    onSurface = Black,
+    secondary = LightChart,
+    outline = Black,
+    inverseSurface = LightCardDisabled
 )
 
 @Composable

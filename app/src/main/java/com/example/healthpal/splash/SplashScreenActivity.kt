@@ -2,7 +2,6 @@ package com.example.healthpal.splash
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -20,6 +19,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -36,13 +37,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.healthpal.R
-import com.example.healthpal.backgroundSetter
+import com.example.healthpal.localdb.HealthPalDatabase
+import com.example.healthpal.main.MainDisplay
+import com.example.healthpal.utility.backgroundSetter
 import com.example.healthpal.registration.RegistrationScreen
 import com.example.healthpal.registration.RegistrationViewModel
 import com.example.healthpal.registration.authProps.GoogleAuthUiClient
 import com.example.healthpal.ui.theme.HealthPalTheme
 import com.google.android.gms.auth.api.identity.Identity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -68,11 +72,14 @@ class SplashScreenActivity : ComponentActivity() {
                     navController = navController, startDestination = "splash_screen"
                 ) {
                     composable("splash_screen") {
-                        SplashScreen(navController, false)
+                        SplashScreen(navController, sharedPrefs.getBoolean("IS_LOGINNED",false))
                     }
                     composable("registration") {
                         val viewModel = viewModel<RegistrationViewModel>()
                         val state by viewModel.state.collectAsStateWithLifecycle()
+                        val context = LocalContext.current
+
+                        val database = HealthPalDatabase.getDbInstance(context)
 
                         val launcher =
                             rememberLauncherForActivityResult(contract = ActivityResultContracts.StartIntentSenderForResult(),
@@ -80,7 +87,9 @@ class SplashScreenActivity : ComponentActivity() {
                                     if (result.resultCode == RESULT_OK) {
                                         lifecycleScope.launch {
                                             val signInResult = googleAuthUiClient.signInWithIntent(
-                                                intent = result.data ?: return@launch
+                                                intent = result.data ?: return@launch,
+                                                db = database,
+                                                context = context
                                             )
                                             viewModel.onSignIn(signInResult)
                                         }
@@ -98,7 +107,7 @@ class SplashScreenActivity : ComponentActivity() {
                                 prefsEditor.putBoolean("IS_LOGINNED", true)
                                 prefsEditor.apply()
                                 prefsEditor.commit()
-                                //navController.navigate("main")
+                                navController.navigate("main")
                             }
                         }
 
@@ -116,7 +125,9 @@ class SplashScreenActivity : ComponentActivity() {
                         )
                     }
                     composable("main") {
-
+                        MainDisplay(
+                            navController = navController
+                        )
                     }
                     composable("workout") {
 
@@ -140,45 +151,52 @@ class SplashScreenActivity : ComponentActivity() {
 fun SplashScreen(navController: NavController, isLoginned: Boolean = false) {
     LaunchedEffect(key1 = true) {
         delay(2000)
-        if (isLoginned){
+        if (isLoginned) {
             navController.navigate("main")
             Timber.tag("info").i("go main")
-        }
-        else {
+        } else {
             navController.navigate("registration")
             Timber.tag("info").i("go reg")
         }
     }
 
-    Box(
+    Surface(
         modifier = Modifier
             .fillMaxSize()
-            .background(backgroundSetter.SetBackground()),
-        contentAlignment = Alignment.Center
     ) {
-        val infiniteTransition = rememberInfiniteTransition(label = "")
-
-        val angle by infiniteTransition.animateFloat(
-            initialValue = 0f, targetValue = 360f, animationSpec = infiniteRepeatable(
-                tween(
-                    1000, easing = LinearEasing
-                ),
-                RepeatMode.Restart,
-            ), label = ""
-        )
-        val scale = infiniteTransition.animateFloat(
-            initialValue = 0.7f, targetValue = 2f, animationSpec = infiniteRepeatable(
-                tween(
-                    1000, easing = FastOutSlowInEasing
-                ), RepeatMode.Restart
-            ), label = ""
-        )
-        Image(
-            painter = painterResource(id = R.drawable.dumbbell),
-            contentDescription = null,
+        backgroundSetter.BackgroundAnimation()
+        Box(
             modifier = Modifier
-                .rotate(angle)
-                .scale(scale.value)
-        )
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            val infiniteTransition = rememberInfiniteTransition(label = "")
+
+            val angle by infiniteTransition.animateFloat(
+                initialValue = 0f, targetValue = 360f, animationSpec = infiniteRepeatable(
+                    tween(
+                        1000, easing = LinearEasing
+                    ),
+                    RepeatMode.Restart,
+                ), label = ""
+            )
+            val scale = infiniteTransition.animateFloat(
+                initialValue = 0.7f, targetValue = 2f, animationSpec = infiniteRepeatable(
+                    tween(
+                        1000, easing = FastOutSlowInEasing
+                    ), RepeatMode.Restart
+                ), label = ""
+            )
+            Image(
+                painter = painterResource(id = R.drawable.dumbbell),
+                contentDescription = null,
+                modifier = Modifier
+                    .rotate(angle)
+                    .scale(scale.value)
+            )
+//            GlobalScope.launch {
+//                getWorkouts()
+//            }
+        }
     }
 }

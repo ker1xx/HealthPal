@@ -1,6 +1,11 @@
 [versions]
 agp = "8.5.0"
+animation = "1.6.8"
+compiler = "1.1.1"
+connectClient = "1.1.0-alpha07"
 coreSplashscreen = "1.0.1"
+desugar_jdk_libs = "2.0.4"
+emojiKt = "2.0.1"
 firebaseBom = "33.1.1"
 hiltAndroidCompiler = "2.51.1"
 hiltLifecycleViewmodel = "1.0.0-alpha03"
@@ -17,7 +22,10 @@ activityCompose = "1.9.0"
 composeBom = "2024.06.00"
 lifecycleViewmodelCompose = "2.8.3"
 lifecycleViewmodelKtx = "2.8.3"
+material = "1.6.8"
 navigationCompose = "2.7.7"
+pagingCompose = "3.3.018"
+pagingRuntimeKtx = "3.3.0"
 paletteV7 = "1.0.0"
 playServicesAuth = "21.2.0"
 playServicesBase = "21.2.0"
@@ -29,9 +37,15 @@ roomRuntime = "2.6.1"
 googleGmsGoogleServices = "4.4.2"
 firebaseAuth = "23.0.0"
 lifecycleRuntimeComposeAndroid = "2.8.3"
+runtime = "1.1.1"
+ui = "1.6.8"
+uiTooling = "1.6.8"
+ycharts = "2.1.0"
 
 [libraries]
 accompanist-coil = { module = "com.google.accompanist:accompanist-coil", version = "0.15.0" }
+androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
+androidx-connect-client = { module = "androidx.health.connect:connect-client", version.ref = "connectClient" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-hilt-lifecycle-viewmodel = { module = "androidx.hilt:hilt-lifecycle-viewmodel", version.ref = "hiltLifecycleViewmodel" }
@@ -39,13 +53,19 @@ androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-com
 androidx-hilt-navigation-fragment = {module = "androidx.hilt:hilt-navigation-fragment", version.ref="hiltNavtigationFragment"}
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version = "3.3.0" }
+androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "pagingRuntimeKtx" }
 androidx-room-common = { module = "androidx.room:room-common", version.ref = "roomRuntime" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 coil = { module = "io.coil-kt:coil-compose", version = "2.6.0" }
+compiler = { module = "android.arch.persistence.room:compiler", version.ref = "compiler" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref= "gson"}
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+emoji-kt = { module = "org.kodein.emoji:emoji-kt", version.ref = "emojiKt" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 google-firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
@@ -73,9 +93,13 @@ play-services-auth = { module = "com.google.android.gms:play-services-auth", ver
 play-services-base = { module = "com.google.android.gms:play-services-base", version.ref = "playServicesBase" }
 play-services-fitness = { module = "com.google.android.gms:play-services-fitness", version.ref = "playServicesFitness" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+runtime = { module = "android.arch.persistence.room:runtime", version.ref = "runtime" }
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 androidx-lifecycle-runtime-compose-android = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose-android", version.ref = "lifecycleRuntimeComposeAndroid" }
+ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "uiTooling" }
+ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
+ycharts = { module = "co.yml:ycharts", version.ref = "ycharts" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

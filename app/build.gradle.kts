@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     kotlin("kapt") version "1.9.0"
     id("com.google.devtools.ksp")
-    id ("dagger.hilt.android.plugin")
+    id("dagger.hilt.android.plugin")
     alias(libs.plugins.google.gms.google.services)
 }
 
@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.healthpal"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -34,6 +34,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -75,7 +76,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     //retrofit
-    implementation (libs.retrofit)
+    implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.okhttp)
     implementation(libs.okhttp3.logging.interceptor)
@@ -106,22 +107,48 @@ dependencies {
 
     //Google Fitness
     implementation(libs.play.services.fitness)
+    implementation(libs.androidx.connect.client)
+    implementation(libs.play.services.auth)
 
     //Room
-    implementation (libs.androidx.room.ktx)
-    implementation (libs.androidx.room.common)
-    annotationProcessor (libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.common)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.runtime)
 
     //Splash Screen
     implementation(libs.androidx.core.splashscreen)
 
     //Firebase
     implementation(platform(libs.firebase.bom))
-    implementation (libs.firebase.analytics)
+    implementation(libs.firebase.analytics)
     implementation(libs.google.firebase.auth)
     implementation(libs.play.services.auth)
 
+    //Emoji
+    implementation(libs.emoji.kt)
 
+    //desugaring
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    //Paging
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.paging.compose)
+
+    //YCharts
+    implementation(libs.ycharts)
+
+    //Google Health
+    implementation(libs.androidx.connect.client)
+
+    //Compose
+    implementation(libs.ui)
+    implementation(libs.androidx.material)
+    implementation(libs.ui.tooling)
+    implementation(libs.androidx.animation)
 }
 
-kapt {    correctErrorTypes = true}
+kapt {
+    correctErrorTypes = true
+}
